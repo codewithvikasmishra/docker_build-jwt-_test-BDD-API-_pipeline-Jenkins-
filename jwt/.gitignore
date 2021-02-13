@@ -1,0 +1,13 @@
+**/ES_DATA/**
+logs/*.log.*
+logs/*.log.
+documents/*
+.dea/*
+**/htmlcov/**
+.coverage
+**/test-output.xml
+**/__pycache__/**
+coverage.xml
+**/login_test_report.xml
+.pytest_cache
+.vscode/*

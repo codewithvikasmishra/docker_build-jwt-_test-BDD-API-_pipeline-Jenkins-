@@ -1,0 +1,64 @@
+Errors which I Faced are as below: -
+1) 'jwt' has no attribute 'encode' in api.py
+2) When I remove encode from code then it was giving another error that 'str' object has no 'decode'
+ in api.py.
+
+Why I faced above two errors and solution: -
+When I ran the entire code of api.py without docker then it was working fine (Also checked on
+POSTMAN testing tool with http://127.0.0.1/5000/login) but when I have shifted to docker then
+I get to know that algorithm needs to be passed in encode and decode both.
+
+3) How to make 2 conatiners in single docker-compose file for development_jwt and test_jwt.
+
+Solution: -
+We need to make docker-compose file with two services and needs to pass different ports for both.
+Also, we need to know build two different docker files (Dockerfiles we can built by name of
+Dockerfileand if we need to make more than one Dockerfile then we need to built Dockerfile.build
+and Dockerfile.test in such way)
+
+4) On which port falsk will run.
+
+Solution: -
+I have used EXPOSE 5000 in my Docker.build file and also in docker-compose file I used port
+as 5000:5000
+
+5) api.py cann't import
+
+Solution: -
+As per my folder structure I need to copy the workdirectory in Dockerfile.build as . /jwt/app and
+in docker-compose file voulmes should be /jwt only for development_jwt container.
+
+6) How to run the development_jwt Dockerfile and cconatiner.
+
+Solution: -
+We need to pass the ENV and CMD in dockerfile as below: -
+ENV FLASK_APP=api.py
+ENV FLASK_RUN_HOST=0.0.0.0
+CMD ["flask","run"]
+
+So in such way we are saying that flask api.py needs to run first at localhost.
+
+7) "exec:\BASH\: executable file not found in $PATH: Unknown for test_jwt container.
+
+Solution: -
+Now the problem is how to run the test_jwt and it should be run after when development_jwt
+conatiner started (because then only pytest can work) so I added
+    depends_on: 
+      - development_jwt
+in docker-compose file. Then the problem is why its sending error of
+["exec:\BASH\: executable file not found in $PATH: Unknown] so I used entrypoint in my
+docker-compose run command as below: -
+docker-compose run --entrypoint=bash test_jwt run_tests.sh
+
+In the above command first I was using bash in uppercase (BASH) which again throwing same error that
+executable file not found. So, please use bash in lower case only.
+
+8) Connection error (refused to connect) in test_jwt.
+
+Solution: -
+I was giving the API link as localhost:5000/login which doesn't work here because my development_jwt
+is running on 172.18.0.1 (you can find it when you will run the docker-compose up command and try
+any API on postman then you will see something like below: - 
+development_jwt   | 172.18.0.1 - - [12/Feb/2021 08:57:29] "GET /login HTTP/1.1" 200 -).
+
+We need to provide ip address of Docker to test the API's.
