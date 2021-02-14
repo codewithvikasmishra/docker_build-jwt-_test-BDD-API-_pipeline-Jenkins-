@@ -1,5 +1,5 @@
 pipeline {
-    agent none{
+    agent none
     stages{
         stage('Build'){
             agent{
@@ -8,7 +8,6 @@ pipeline {
                 steps{
                     sh 'docker-compose up'
                     stash(name: 'compiled-results', includes: 'sources/*.py*')
-                }
             }
         }
     }
