@@ -3,7 +3,7 @@ pipeline {
     stages{
         stage('Build'){
             agent{
-                docker { image 'development_jwt' }
+                docker { image 'development_jwt:latest' }
                 }
                 steps{
                     sh 'docker-compose up'
