@@ -2,14 +2,18 @@ pipeline {
     agent any
     stages{
         stage('Build Docker Image'){
+            steps{
             sh 'docker build -t vikasbca08/development_jwt .'
         }
+        }
         stage('Push Docker Image'){
+            steps{
             withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhubpwd')]) {
                 sh "docker login -u vikasbca08 -p ${dockerhubpwd}"
                 }
             
             sh 'docker push vikasbca08/development_jwt'
+        }
         }
         stage('Build'){
             agent{
