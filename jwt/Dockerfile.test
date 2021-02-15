@@ -1,9 +1,0 @@
-FROM python:3.7
-
-COPY test_requirements.txt ./test_requirements.txt
-
-RUN pip install --no-cache-dir -r test_requirements.txt
-RUN apt-get update -y
-
-COPY . /jwt
-WORKDIR /jwt
