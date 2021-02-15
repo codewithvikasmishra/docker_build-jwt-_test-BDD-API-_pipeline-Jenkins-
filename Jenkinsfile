@@ -2,7 +2,14 @@ pipeline {
     agent any
     stages{
         stage('Build Docker Image'){
-            sh 'docker build -t vikasbca08/jwt_jenkins:1.0.0 .'
+            sh 'docker build -t vikasbca08/development_jwt .'
+        }
+        stage('Push Docker Image'){
+            withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhubpwd')]) {
+                sh "docker login -u vikasbca08 -p ${dockerhubpwd}"
+                }
+            
+            sh 'docker push vikasbca08/development_jwt'
         }
         stage('Build'){
             agent{
