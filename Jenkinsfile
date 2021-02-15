@@ -5,6 +5,7 @@ pipeline {
             agent{
                 docker {
                     image 'development_jwt:latest'
+                    args '-v /tmp:/tmp'
                     }
                 }
                 steps{
